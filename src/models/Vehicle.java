@@ -47,20 +47,16 @@ public class Vehicle {
     }
 
     /**
-     * model needs to contain only letters and have more than 3 characters
+     * model needs to contain only letters and have more than 2 characters
      * @param model
      */
     public void setModel(String model) {
         model = model.trim();
-        if (model.length()>=3){
-            if (model.matches("[A-Z][a-z]*")){
+        if (model.length()>=2){
                 this.model = model;
-            }
-            else
-                throw new IllegalArgumentException("Model must start with an upper case letter and only contain alphabetic characters");
         }
         else
-            throw new IllegalArgumentException("Model of the vehicle must have at least 3 characters");
+            throw new IllegalArgumentException("Model of the vehicle must have at least 2 characters");
 
 
     }
@@ -89,10 +85,11 @@ public class Vehicle {
      * @param mileage
      */
     public void setMileage(int mileage) {
-        if(mileage<=0){
-            throw new IllegalArgumentException("Mileage cannot be equal or less than 0!");
+        if (mileage>=0&&mileage<=250000){
+            this.mileage=mileage;
         }
-        this.mileage = mileage;
+        else
+            throw new IllegalArgumentException(mileage+" is not a valid mileage, should be between 0 and 250,000");
     }
 
     public double getPrice() {
