@@ -19,4 +19,15 @@ public class Inventory {
     public void addVehicle(Vehicle car){
         carInventory.add(car);
     }
+
+    public double getInventoryValue() {
+        double totalPrice = 0;
+        for (Vehicle car : carInventory) {
+            totalPrice += car.getPrice();
+        }
+        return totalPrice;
+    }
+    public int getAmountOfCars(){
+        return carInventory.size();
+    }
 }

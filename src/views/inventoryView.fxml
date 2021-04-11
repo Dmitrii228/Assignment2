@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.InventoryViewControllers">
+   <children>
+      <Button layoutX="160.0" layoutY="336.0" mnemonicParsing="false" text="Prev" />
+      <Button layoutX="466.0" layoutY="336.0" mnemonicParsing="false" text="Next" />
+      <ImageView fitHeight="204.0" fitWidth="412.0" layoutX="160.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="makeLabel" layoutX="160.0" layoutY="240.0" text="Make:" />
+      <Label fx:id="modelLabel" layoutX="160.0" layoutY="266.0" text="Model:" />
+      <Label fx:id="yearLabel" layoutX="372.0" layoutY="240.0" text="Year:" />
+      <Label fx:id="mileageLabel" layoutX="371.0" layoutY="266.0" prefHeight="17.0" prefWidth="52.0" text="Mileage:" />
+      <Label fx:id="priceLabel" layoutX="539.0" layoutY="232.0" text="Price:" />
+      <Label fx:id="carsInInventoryLabel" layoutX="129.0" layoutY="397.0" prefHeight="38.0" prefWidth="102.0" text="Cars in inventory:" />
+      <Label fx:id="inventoryValueLabel" layoutX="121.0" layoutY="457.0" text="Total Inventory Value:" />
+      <Button layoutX="140.0" layoutY="515.0" mnemonicParsing="false" text="Sell Car" />
+      <Button layoutX="466.0" layoutY="515.0" mnemonicParsing="false" text="Add new car" />
+   </children>
+</AnchorPane>

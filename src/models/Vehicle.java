@@ -70,7 +70,7 @@ public class Vehicle {
      * @param year
      */
     public void setYear(int year) {
-        if (year>2021){
+        if (year>LocalDate.now().getYear()){
             throw new IllegalArgumentException("Car cannot be built in the future");
         }
         this.year = year;
