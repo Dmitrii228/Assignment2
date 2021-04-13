@@ -9,17 +9,41 @@ public class Vehicle {
     private int year;
     private int mileage;
     private double price;
-    private Image carImage;
 
 
+
+    private int vehicleNum;
+
+
+    public Vehicle(String make, String model, int year, int mileage, double price,int vehicleNum) {
+
+        setMake(make);
+        setModel(model);
+        setYear(year);
+        setMileage(mileage);
+        setPrice(price);
+        setVehicleNum(vehicleNum);
+    }
     public Vehicle(String make, String model, int year, int mileage, double price) {
+
         setMake(make);
         setModel(model);
         setYear(year);
         setMileage(mileage);
         setPrice(price);
     }
+    public int getVehicleNum() {
+        return vehicleNum;
+    }
 
+    public void setVehicleNum(int vehicleNum) {
+        if (vehicleNum>=1){
+            this.vehicleNum = vehicleNum;
+        }
+        else
+            throw new IllegalArgumentException("Vehicle number must be greater or equal to 1");
+
+    }
     public String getMake() {
         return make;
     }
@@ -107,7 +131,9 @@ public class Vehicle {
         this.price = price;
     }
 
-
+public String toString(){
+        return String.format("Make: %s Model:%s Year:%s Price:$%s",make, model, year, price);
+}
 
 
 }

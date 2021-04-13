@@ -1,23 +1,80 @@
 package utilities;
 
+import models.Vehicle;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DBUtility {
-    private static String user = "root";
-    private static String password = "root";
+    private static String user = "car";
+    private static String password = "car";
     private static String connString = "jdbc:mysql://localhost:3306/Assignment2";
+
     /**
-     * get the make as a string from DB
+     * adding cars to the database
+     * @param newVehicle
      * @return
      * @throws SQLException
      */
-    public static String getMakeFromDB() throws SQLException {
+    public static int addCarIntoDB(Vehicle newVehicle) throws SQLException {
+
+        int vehicleNum = -1;
         //connect to the DB
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try{
+
+            conn = DriverManager.getConnection(connString,user,password);
+
+            // inserts information in the sql database
+            statement = conn.prepareStatement("INSERT INTO cars (make, model, year, mileage,price) VALUES " +
+                    "(?,?,?,?,?)", new String[]{"vehicleNum"});
+
+
+            statement.setString(1, newVehicle.getMake());
+            statement.setString(2, newVehicle.getModel());
+            statement.setInt(3, newVehicle.getYear());
+            statement.setInt(4, newVehicle.getMileage());
+            statement.setDouble(5, newVehicle.getPrice());
+
+            statement.executeUpdate();
+
+
+            resultSet = statement.getGeneratedKeys();
+
+            while (resultSet.next())
+                vehicleNum = resultSet.getInt(1);
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            if (conn != null)
+                conn.close();
+            if (statement != null)
+                statement.close();
+            if (resultSet != null)
+                resultSet.close();
+            return vehicleNum;
+        }
+    }
+
+    /**
+     * gets the cars from the database
+     * @return
+     * @throws SQLException
+     */
+    public static ArrayList<Vehicle> getVehiclesFromDB() throws SQLException {
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+
+        //connecting to the DB
         Connection conn = null;
         Statement statement = null;
         ResultSet resultSet = null;
 
-        String make = "";
         try{
             //connect to the Database
             conn = DriverManager.getConnection(connString, user, password);
@@ -25,10 +82,19 @@ public class DBUtility {
             statement = conn.createStatement();
 
             //run the query on the DB
-            resultSet = statement.executeQuery("SELECT make FROM cars");
+            resultSet = statement.executeQuery("SELECT * FROM cars");
 
-          make = resultSet.getString("make");
-        } catch (SQLException e)
+            //loop over the resultset and create Vehicle objects
+            while (resultSet.next()){
+                String make = resultSet.getString("make");
+                Vehicle newVehicle = new Vehicle(resultSet.getString("make"),
+                        resultSet.getString("model"),
+                        resultSet.getInt("year"),
+                        resultSet.getInt("mileage"),
+                        resultSet.getDouble("price"));
+                vehicles.add(newVehicle);
+            }
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -40,187 +106,7 @@ public class DBUtility {
             if (resultSet != null)
                 resultSet.close();
         }
-        return make;
+        return vehicles;
     }
 
-    /**
-     * get the model as a string from DB
-     * @return
-     * @throws SQLException
-     */
-    public static String getModelFromDB() throws SQLException {
-        //connect to the DB
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        String model = "";
-        try{
-            //connect to the Database
-            conn = DriverManager.getConnection(connString, user, password);
-
-            statement = conn.createStatement();
-
-            //run the query on the DB
-            resultSet = statement.executeQuery("SELECT model FROM cars");
-
-            model = resultSet.getString("model");
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-            if (conn != null)
-                conn.close();
-            if (statement != null)
-                statement.close();
-            if (resultSet != null)
-                resultSet.close();
-        }
-        return model;
-    }
-    /**
-     * get the year as a int from DB
-     * @return
-     * @throws SQLException
-     */
-    public static int getYearFromDB() throws SQLException {
-        //connect to the DB
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        int year = 0;
-        try{
-            //connect to the Database
-            conn = DriverManager.getConnection(connString, user, password);
-
-            statement = conn.createStatement();
-
-            //run the query on the DB
-            resultSet = statement.executeQuery("SELECT year FROM cars");
-
-            year = resultSet.getInt("year");
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-            if (conn != null)
-                conn.close();
-            if (statement != null)
-                statement.close();
-            if (resultSet != null)
-                resultSet.close();
-        }
-        return year;
-    }
-    /**
-     * get the mileage as a int from DB
-     * @return
-     * @throws SQLException
-     */
-    public static int getMileageFromDB() throws SQLException {
-        //connect to the DB
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        int mileage = 0;
-        try{
-            //connect to the Database
-            conn = DriverManager.getConnection(connString, user, password);
-
-            statement = conn.createStatement();
-
-            //run the query on the DB
-            resultSet = statement.executeQuery("SELECT mileage FROM cars");
-
-            mileage = resultSet.getInt("mileage");
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-            if (conn != null)
-                conn.close();
-            if (statement != null)
-                statement.close();
-            if (resultSet != null)
-                resultSet.close();
-        }
-        return mileage;
-    }
-    /**
-     * get the price as a double from DB
-     * @return
-     * @throws SQLException
-     */
-    public static double getPriceFromDB() throws SQLException {
-        //connect to the DB
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        double price = 0;
-        try{
-            //connect to the Database
-            conn = DriverManager.getConnection(connString, user, password);
-
-            statement = conn.createStatement();
-
-            //run the query on the DB
-            resultSet = statement.executeQuery("SELECT price FROM cars");
-
-            price = resultSet.getDouble("price");
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-            if (conn != null)
-                conn.close();
-            if (statement != null)
-                statement.close();
-            if (resultSet != null)
-                resultSet.close();
-        }
-        return price;
-    }
-    /**
-     * get the amount of cars in the inventory as a int from DB
-     * @return
-     * @throws SQLException
-     */
-    public static int getCarsInInventoryLabel() throws SQLException {
-        //connect to the DB
-        Connection conn = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
-        int amountOFCars = 0;
-        try{
-            //connect to the Database
-            conn = DriverManager.getConnection(connString, user, password);
-
-            statement = conn.createStatement();
-
-            //run the query on the DB
-            resultSet = statement.executeQuery("SELECT COUNT(*) FROM cars;");
-
-            amountOFCars = resultSet.getInt(1);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-            if (conn != null)
-                conn.close();
-            if (statement != null)
-                statement.close();
-            if (resultSet != null)
-                resultSet.close();
-        }
-        return amountOFCars;
-    }
 }

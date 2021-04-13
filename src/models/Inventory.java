@@ -8,8 +8,12 @@ public class Inventory {
     /**
      * Constructor for Inventory class
      */
-    public Inventory(){
-        this.carInventory = new ArrayList<>();
+    public Inventory(ArrayList<Vehicle> inventory){
+        this.carInventory = inventory;
+    }
+
+    public ArrayList<Vehicle> getCarInventory() {
+        return carInventory;
     }
 
     /**
